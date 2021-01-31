@@ -9,6 +9,8 @@
 3. `pip install -r requirements.txt`
 4. `python -m podpuller`
 
+<img src="screenshot.png">
+
 ## Motivation
 
 After giving up my smartphone and buying a cheapo MP3 player I wanted a way to keep my feeds synced. 
