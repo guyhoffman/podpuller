@@ -9,7 +9,7 @@
 3. `pip install -r requirements.txt`
 4. `python -m podpuller`
 
-<img src="screenshot.png" />
+<img src="screenshot.png">
 
 ## Motivation
 
