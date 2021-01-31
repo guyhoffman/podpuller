@@ -1,0 +1,14 @@
+bullet==2.2.0
+certifi==2020.12.5
+chardet==4.0.0
+feedparser==6.0.2
+FormEncode==2.0.0
+idna==2.10
+PyDispatcher==2.0.5
+requests==2.25.1
+sgmllib3k==1.0.0
+six==1.15.0
+SQLObject==3.9.0
+termcolor==1.1.0
+tqdm==4.56.0
+urllib3==1.26.3
