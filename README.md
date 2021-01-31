@@ -24,7 +24,7 @@ The config file is read from `~/.config/podpuller/feeds.conf` and you have an ex
 
 ## Notes
 
-- Every podcast goes into a directory named by its config file section (for example `tal` in the example).
+- Every podcast goes into a directory named by its config file section (e.g., `tal` in the sample conf file).
 - Sync both transfers and deletes files. It basically does an exact copy.
 - All defaults, including `rsync` flags, are for MacOS but can probably be easily changed for UN*X systems.
 - No need to provide a name for the feed, just a URL, the name will be auto-filled from the RSS feed.
