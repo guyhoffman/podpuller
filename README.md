@@ -16,7 +16,7 @@ This is that app. It was heavily inspired (and liberally copied) from the exelle
 4. Sync
 5. If desired, transfer to external drive
 
-The config file is read from and you have an example [here](https://github.com/guyhoffman/podpuller/blob/main/feeds.example.conf). It is pretty straightforward. 
+The config file is read from `~/.config/podpuller/feeds.conf` and you have an example [here](https://github.com/guyhoffman/podpuller/blob/main/feeds.example.conf). It is pretty straightforward. 
 
 - `data directory`: Where to store the SQL database of downloaded and listened episodes
 - `download directory`: Where to download the podcasts to. 
