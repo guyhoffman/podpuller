@@ -29,16 +29,20 @@ def get_episode(show, episode, dl_dir):
 
     dl_loc = expanduser(dl_dir) + os.sep + show + os.sep + generate_filename(episode)
 
-  # Down re-download
+  # Do we have this file? 
     if os.path.exists(dl_loc):
         cprint(f'Already have: {episode.title}', 'cyan')
         return True
     else:
+        # We not have this file
         e = seen(episode)
-        if e.played:
+        
+        # We might have played and deleted it in the past, don't download again
+        if e and e.played:
             cprint(f'Already listened: {episode.title}', 'magenta')
             return False
 
+    # If we are here, we want another episode, we don't have this one, and haven't played
     if download_episode(episode, dl_loc):
         markDownloaded(episode)
         return True
@@ -53,6 +57,12 @@ def download_episode(episode, dl_loc):
     if not download_loc:
         return False
 
+    if download_loc == 'dontwant':
+        # Just mark as played but don't count
+        cprint(f'Marked listened: {episode.title}', 'magenta')
+        markDownloaded(episode)
+        return False
+        
     # Move downloaded file to its final destination
     logging.debug(f"Moving {download_loc} to {dl_loc}")
 
@@ -90,7 +100,10 @@ def download_enclosure(episode):
                         pbar.update(len(chunk))
 
     except KeyboardInterrupt:
-        if not ui.interrupt_dl():
+        if ui.interrupt_dl():
+            # Mark as played
+            return 'dontwant'
+        else:
             return None
     
     # TODO: Add MP3 metadata if it doesn't exist

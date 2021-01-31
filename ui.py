@@ -12,7 +12,7 @@ from bullet import Check, colors
 def interrupt_dl():
     logging.info("Download aborted by Ctrl+c")
     try:
-        return yesno("Do you like to mark item as read? (y/n) or quit? (Ctrl+c): ")
+        return yesno("Do you like to mark item as played? (y/n) or quit? (Ctrl+c): ")
     except KeyboardInterrupt:
         print("\nQuitting")
         sys.exit()
