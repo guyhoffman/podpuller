@@ -6,8 +6,8 @@
 
 1. Copy `feeds.example.conf` to `~/.config/podpuller/feeds.conf`
 2. Put in URLs of RSS feeds of podcasts you want. Use a unique section name for each feed. No need to put in a title.
-3. `pip install -r requirements.txt`
-4. `python -m podpuller`
+3. In the repo directory: `pip install -r requirements.txt`
+4. In the repo directory: `python -m podpuller`
 
 <img src="screenshot.png">
 
