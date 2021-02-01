@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from ui import yesno
 import feedparser
 
 import configparser
@@ -10,6 +9,7 @@ from subprocess import run
 from termcolor import cprint
 
 from process import *
+import ui
 
 # Configuration Filename 
 config_filename = '~/.config/podpuller/feeds.conf'
