@@ -31,7 +31,7 @@ def process_feed(feed_name, conf, be_quick):
     """
     feed = conf[feed_name]
     url = feed['URL']
-    keep = feed.getint('keep_episodes', 0)
+    keep = feed.getint('keep episodes', 0)
     
     rss = feedparser.parse(url)
 
@@ -42,7 +42,7 @@ def process_feed(feed_name, conf, be_quick):
         logging.error("Erroneous feed URL: %s (%s)"%(url, type(e)))
         return
 
-    cprint(f'  ======== {rss.feed.title} ({feed.name}/{keep}) ========  ', 'grey', 'on_yellow')
+    cprint(f'  ======== {rss.feed.title} ({feed.name}; keep {keep}) ========  ', 'grey', 'on_yellow')
 
     # Oldest or newest first
     if feed.getboolean('oldest_first'):
@@ -120,8 +120,8 @@ def main():
     
     # Check for quick mode
     be_quick = False
-    if conf.get(conf.default_section, 'Always Quick', fallback=False) or \
-        ui.yesno('Quick mode (without asking for deletion)'):
+    if conf.get(conf.default_section, 'always quick', fallback=False) or \
+        ui.yesno('Quick mode?'):
         be_quick = True
         
     # Process Feeds (except DEFAULT)

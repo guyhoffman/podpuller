@@ -3,6 +3,7 @@ import sys
 import os
 
 from bullet import Check, colors
+from termcolor import cprint
 
 # cli = Check(prompt = "Choose from the items below: ", 
 #     choices = ['yes', 'no'])  # Create a Bullet or Check object
@@ -24,5 +25,7 @@ def yesno(prompt):
 def mark_deletion(dir):
     filenames = sorted(os.listdir(dir), reverse=True)
     if filenames:
-        cli = Check(choices = filenames, check='X ', check_color=colors.foreground['red'])
+        not_dotfiles =  [f for f in filenames if not f.startswith('.')]
+        cprint(f'Mark listened with [Space]. [Enter] to continue.', 'red')
+        cli = Check(choices = not_dotfiles, check='X ', check_color=colors.foreground['red'])
         return cli.launch()
