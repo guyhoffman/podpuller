@@ -91,10 +91,7 @@ def sync_external():
     if os.path.exists(rsync_dir):
         if ui.yesno(f"Sync to player {rsync_dir}?"):
             run(["rsync", 
-                 "-vax", "--size-only", '--exclude=".*"', "--delete", "--progress", "--ignore-errors",
-                 expanduser(dl_dir),
-                 rsync_dir,
-                ],
+                "-vahxP", "--size-only", '--exclude=".*"', "--delete", expanduser(dl_dir), rsync_dir],
                 capture_output=False,
             )
             logging.info("Done.")
