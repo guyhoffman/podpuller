@@ -93,10 +93,7 @@ def download_enclosure(episode):
         # Download with progress bar in 2k chunks
         with open(downloadto, "wb") as f:
             total_length = int(r.headers["content-length"])
-            with tqdm(total=total_length, 
-                    unit="B", 
-                    unit_scale=True, 
-                    ncols=90) as pbar:
+            with tqdm(total=total_length, unit="B", unit_scale=True, ncols=90) as pbar:
                 for chunk in r.iter_content(2048):
                     f.write(chunk)
                     if chunk:
