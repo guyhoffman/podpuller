@@ -16,7 +16,7 @@ import ui
 config_filename = "~/.config/podpuller/feeds.conf"
 directories = {}
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 
 def update_configfile(conf):
@@ -46,7 +46,7 @@ def process_feed(feed_name, conf, be_quick):
         logging.error("Erroneous feed URL: %s (%s)" % (url, type(e)))
         return
 
-    cprint(f"  ====== {rss.feed.title} ({feed.name}; keep {keep}) ======  ", "grey", "on_yellow")
+    cprint(f"  ===== {rss.feed.title} ({feed.name}; keep {keep}) =====  ", "grey" "on_yellow")
 
     # Serial podcasts need to be processed from last to first
     if feed.getboolean("serial"):
@@ -63,7 +63,8 @@ def process_feed(feed_name, conf, be_quick):
         tobe_deleted = ui.mark_deletion(dl_dir + os.sep + feed.name)
 
     if start_date:
-        cprint(f"Starting from {start_date}", "cyan")
+        pretty_date = start_date.strftime("%B %d, %Y")
+        cprint(f"Starting {pretty_date}", "cyan")
 
     have = 0
     for episode in rss.entries:
