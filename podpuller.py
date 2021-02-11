@@ -6,6 +6,7 @@ import configparser
 import logging
 from os.path import expanduser
 from subprocess import run
+import sys
 from termcolor import cprint
 
 from process import *
@@ -46,8 +47,8 @@ def process_feed(feed_name, conf, be_quick):
 
     cprint(f"  ====== {rss.feed.title} ({feed.name}; keep {keep}) ======  ", "grey", "on_yellow")
 
-    # Oldest or newest first
-    if feed.getboolean("oldest_first"):
+    # Serial podcasts need to be processed from last to first
+    if feed.getboolean("serial"):
         rss.entries.reverse()
 
     #################################################
@@ -133,10 +134,14 @@ def main():
     ):
         be_quick = True
 
-    # Process Feeds (except DEFAULT)
-    for feed_name in conf:
-        if feed_name != conf.default_section:
-            process_feed(feed_name, conf, be_quick)
+    # If a feed ID is given, only process that feed
+    if len(sys.argv) > 1:
+        process_feed(sys.argv[1], conf, be_quick)
+    else:
+        # Process all feeds (except DEFAULT)
+        for feed_name in conf:
+            if feed_name != conf.default_section:
+                process_feed(feed_name, conf, be_quick)
 
     logging.info("Done updating feeds.")
 
