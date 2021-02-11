@@ -21,11 +21,14 @@ This is that app. It was heavily inspired (and liberally copied) from the exelle
 
 ## Workflow
 
+#####Config `~/.config/podpuller/feeds.conf`
 1. Choose your RSS feeds
-2. Specify how many episodes you want
-3. If desired, mark the ones you listened to
-4. Sync
-5. If desired, transfer to external drive
+1. Specify how many episodes you want
+1. Choose serial (oldest first) or regular + optional start date
+#####Run `python -m podpuller [opt:single_feed]`
+1. Mark the ones you listened to (or skip with "quick mode") 
+1. Wait for sync (only syncs single feed if specified)
+1. Optionally, transfer to external drive
 
 ### Config
 The config file is read from `~/.config/podpuller/feeds.conf` and you have an example [here](https://github.com/guyhoffman/podpuller/blob/main/feeds.example.conf). It is pretty straightforward:
