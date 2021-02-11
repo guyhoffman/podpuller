@@ -138,6 +138,20 @@ def delete_episode(show, episode, dl_dir, manual=False):
     return False
 
 
+def parse_date(date_str):
+    if not date_str:
+        return None
+    elif date_str == "now":
+        return dt.now()
+    else:
+        try:
+            d = dt.strptime(date_str, "%Y-%m-%d")
+        except Exception:
+            msg = "Date should be in YYYY-MM-DD format"
+            raise AttributeError(msg)
+        return d
+
+
 def check_feederrors(rss):
     """Checks if the parsed RSS is actually a valid podcast feed"""
 

@@ -35,6 +35,7 @@ def process_feed(feed_name, conf, be_quick):
     feed = conf[feed_name]
     url = feed["URL"]
     keep = feed.getint("keep episodes", 0)
+    start_date = parse_date(feed.get("start date"))
 
     rss = feedparser.parse(url)
 
@@ -61,6 +62,9 @@ def process_feed(feed_name, conf, be_quick):
     if not be_quick:
         tobe_deleted = ui.mark_deletion(dl_dir + os.sep + feed.name)
 
+    if start_date:
+        cprint(f"Starting from {start_date}", "cyan")
+
     have = 0
     for episode in rss.entries:
         hash_episode(episode)
@@ -71,8 +75,9 @@ def process_feed(feed_name, conf, be_quick):
             continue
 
         if have < keep:
-            if get_episode(feed.name, episode, dl_dir):
-                have += 1
+            if not start_date or episode.pub_date >= start_date:
+                if get_episode(feed.name, episode, dl_dir):
+                    have += 1
         else:
             delete_episode(feed.name, episode, dl_dir)
 
