@@ -16,7 +16,9 @@ class Episode(SQLObject):
 
 def init_db(data_dir):
     print(expanduser(data_dir + os.sep + "episodes.db"))
-    Episode._connection = sqlite.builder()(expanduser(data_dir + os.sep + "episodes.db"), debug=False)
+    Episode._connection = sqlite.builder()(
+        expanduser(data_dir + os.sep + "episodes.db"), debug=False
+    )
     Episode.createTable(ifNotExists=True)
 
 

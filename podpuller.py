@@ -109,9 +109,7 @@ def parse_dirs(config):
     s = config.default_section
     data_dir = config.get(s, "Data directory", fallback="=~/.local/share/podpuller")
     dl_dir = config.get(s, "Download directory", fallback="~/Downloads/podcasts/")
-    rsync_dir = config.get(
-        s, "MP3 Player directory", fallback="/Volumes/M500/podcasts/"
-    )
+    rsync_dir = config.get(s, "MP3 Player directory", fallback="/Volumes/M500/podcasts/")
 
     global directories
     directories["data"] = os.path.expanduser(data_dir)
