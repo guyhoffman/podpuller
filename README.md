@@ -15,7 +15,7 @@
 
 After giving up my smartphone and buying a cheapo MP3 player I wanted a way to keep my feeds synced. 
 
-There are many great programs for this out there, like [Greg](https://github.com/manolomartinez/greg/), but it didn't really fit my workflow, which was having a certain number of episodes of each podcast, and manually marking the ones I have alreaedy listened to. 
+There are many great programs for this out there, like [Greg](https://github.com/manolomartinez/greg/), but it didn't really fit my workflow, which was having a certain number of the newest episodes of each podcast, and manually marking the ones I have alreaedy listened to. 
 
 This is that app. It was heavily inspired (and liberally copied) from the exellent [upodder](https://github.com/m3nu/upodder) which is no longer maintained. 
 
@@ -27,18 +27,23 @@ This is that app. It was heavily inspired (and liberally copied) from the exelle
 4. Sync
 5. If desired, transfer to external drive
 
-The config file is read from `~/.config/podpuller/feeds.conf` and you have an example [here](https://github.com/guyhoffman/podpuller/blob/main/feeds.example.conf). It is pretty straightforward. 
+### Config
+The config file is read from `~/.config/podpuller/feeds.conf` and you have an example [here](https://github.com/guyhoffman/podpuller/blob/main/feeds.example.conf). It is pretty straightforward:
 
+##### Global Configs
 - `data directory`: Where to store the SQL database of downloaded and listened episodes
 - `download directory`: Where to download the podcasts to. 
 - `mp3 player directory`: Where to sync the download directory to. 
 
-## Notes
+##### Feed Configs
+- Every feed goes into a directory named by its config file section (e.g., `tal` in the sample conf file).
+- The `serial` config gets episodes from oldest to newest.
+- `start date` ignored everything before that date (useful for `serial` podcasts).
+- There's no need to provide a name for the feed, just a URL, the name will be auto-filled from the RSS feed.
 
-- Every podcast goes into a directory named by its config file section (e.g., `tal` in the sample conf file).
+### Notes
 - Sync both transfers and deletes files. It basically does an exact copy.
 - All defaults, including `rsync` flags, are for MacOS but can probably be easily changed for UN*X systems.
-- No need to provide a name for the feed, just a URL, the name will be auto-filled from the RSS feed.
 
 ## Rant
 
@@ -47,5 +52,5 @@ RSS is a long-standing, open standard for updated feeds. Your podcast success is
 ## Roadmap
 
 - Tag MP3 files with info from feed
-- UI improvements
-- Handle "oldest-first" workflow for serial podcasts
+- ~~UI improvements~~
+- ~~Handle "oldest-first" workflow for serial podcasts~~
