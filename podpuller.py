@@ -46,7 +46,7 @@ def process_feed(feed_name, conf, be_quick):
         logging.error("Erroneous feed URL: %s (%s)" % (url, type(e)))
         return
 
-    cprint(f"  ===== {rss.feed.title} ({feed.name}; keep {keep}) =====  ", "grey" "on_yellow")
+    cprint(f"  ===== {rss.feed.title} ({feed.name}; keep {keep}) =====  ", "grey","on_yellow")
 
     # Serial podcasts need to be processed from last to first
     if feed.getboolean("serial"):
