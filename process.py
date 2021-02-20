@@ -12,8 +12,8 @@ from feedparser.util import FeedParserDict
 from termcolor import cprint
 from tqdm import tqdm
 
-import ui
-from db import *
+from . import ui
+from .db import *
 
 TEMPDIR = "/tmp/podpuller"
 BADFNCHARS = re.compile(r"[^\w]+")

@@ -9,8 +9,8 @@ from subprocess import run
 import sys
 from termcolor import cprint
 
-from process import *
-import ui
+from .process import *
+from . import ui
 
 # Configuration Filename
 config_filename = "~/.config/podpuller/feeds.conf"
