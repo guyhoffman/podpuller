@@ -7,7 +7,7 @@
 1. Copy `feeds.example.conf` to `~/.config/podpuller/feeds.conf`
 2. Put in URLs of RSS feeds of podcasts you want. Use a unique section name for each feed. No need to put in a title.
 3. In the repo directory: `pip install -r requirements.txt`
-4. In the repo directory: `python -m podpuller`
+4. In the parent directory of the repo: `python -m podpuller`
 
 <img src="screenshot.png">
 
@@ -15,9 +15,9 @@
 
 After giving up my smartphone and buying a cheapo MP3 player I wanted a way to keep my feeds synced. 
 
-There are many great programs for this out there, like [Greg](https://github.com/manolomartinez/greg/), but it didn't really fit my workflow, which was having a certain number of the newest episodes of each podcast, and manually marking the ones I have alreaedy listened to. 
+There are many great programs for this out there, like [Greg](https://github.com/manolomartinez/greg/), but it didn't really fit my workflow, which was having a certain number of the newest episodes of each podcast, and manually marking the ones I have already listened to. 
 
-This is that app. It was heavily inspired (and liberally copied) from the exellent [upodder](https://github.com/m3nu/upodder) which is no longer maintained. 
+This is that app. It was heavily inspired (and liberally copied) from the excellent [upodder](https://github.com/m3nu/upodder) which is no longer maintained. 
 
 ## Workflow
 
