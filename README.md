@@ -6,8 +6,8 @@
 
 1. Copy `feeds.example.conf` to `~/.config/podpuller/feeds.conf`
 2. Put in URLs of RSS feeds of podcasts you want. Use a unique section name for each feed. No need to put in a title.
-3. In the repo directory: `pip install -r requirements.txt`
-4. In the parent directory of the repo: `python -m podpuller`
+3. In the repo directory: `pip install .` 
+4. You can now use the command `podpuller`
 
 <img src="screenshot.png">
 
@@ -57,5 +57,6 @@ RSS is a long-standing, open standard for updated feeds. Your podcast success is
 ## Roadmap
 
 - Tag MP3 files with info from feed
+- Put package on PyPI
 - ~~UI improvements~~
 - ~~Handle "oldest-first" workflow for serial podcasts~~
