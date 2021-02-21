@@ -3,11 +3,10 @@
 ### A simple python app to sync your podcasts with RSS feeds and transfer to an external MP3 player
 
 ## Quick Start
-
+1. `pip install podpuller`
 1. Copy `feeds.example.conf` to `~/.config/podpuller/feeds.conf`
-2. Put in URLs of RSS feeds of podcasts you want. Use a unique section name for each feed. No need to put in a title.
-3. In the repo directory: `pip install .` 
-4. You can now use the command `podpuller`
+1. Put in URLs of RSS feeds, using a unique section name for each feed. No need to put in title.
+1. You can now use the command `podpuller`
 
 <img src="screenshot.png">
 
@@ -27,7 +26,7 @@ This is that app. It was heavily inspired (and liberally copied) from the excell
 1. Specify how many episodes you want
 1. Choose serial (oldest first) or regular + optional start date
 
-#### Run: `python -m podpuller [opt:single_feed]`
+#### Run: `podpuller [opt:single_feed]`
 1. Mark the ones you listened to (or skip with "quick mode") 
 1. Wait for sync (only syncs single feed if specified)
 1. Optionally, transfer to external drive
@@ -57,6 +56,6 @@ RSS is a long-standing, open standard for updated feeds. Your podcast success is
 ## Roadmap
 
 - Tag MP3 files with info from feed
-- Put package on PyPI
+- ~~Put project on PyPI~~
 - ~~UI improvements~~
 - ~~Handle "oldest-first" workflow for serial podcasts~~
