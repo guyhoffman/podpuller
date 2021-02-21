@@ -8,7 +8,7 @@
 1. Put in URLs of RSS feeds, using a unique section name for each feed. No need to put in title.
 1. You can now use the command `podpuller`
 
-<img src="screenshot.png">
+![podpuller screenshot](https://raw.githubusercontent.com/guyhoffman/podpuller/main/screenshot.png)
 
 ## Motivation
 
@@ -35,8 +35,8 @@ This is that app. It was heavily inspired (and liberally copied) from the excell
 The config file is read from `~/.config/podpuller/feeds.conf` and you have an example [here](https://github.com/guyhoffman/podpuller/blob/main/feeds.example.conf). It is pretty straightforward:
 
 ##### Global Configs
-- `data directory`: Where to store the SQL database of downloaded and listened episodes
-- `download directory`: Where to download the podcasts to. 
+- `data directory`: Where to store the SQL database of downloaded and listened episodes.
+- `download directory`: Where to download the podcasts to.
 - `mp3 player directory`: Where to sync the download directory to. 
 
 ##### Feed Configs
@@ -51,7 +51,7 @@ The config file is read from `~/.config/podpuller/feeds.conf` and you have an ex
 
 ## Rant
 
-RSS is a long-standing, open standard for updated feeds. Your podcast success is built on the shoulders of many open-source and open-format developers who poured their heart into it. Please stop making your podcast available only through proprietary channels like Spotify, iTunes, etc. Give back by also publishing your RSS feed. Thanks!
+RSS is a long-standing open standard for updated feeds. Your podcast success is built on the shoulders of many open-source and open-format developers who poured their heart into it. Please stop making your podcast available only through proprietary channels like Spotify, iTunes, etc. Give back by also publishing your RSS feed. Thanks!
 
 ## Roadmap
 
