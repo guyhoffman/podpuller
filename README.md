@@ -21,11 +21,13 @@ This is that app. It was heavily inspired (and liberally copied) from the excell
 
 ## Workflow
 
-#####Config `~/.config/podpuller/feeds.conf`
+#### Config: `~/.config/podpuller/feeds.conf`
+
 1. Choose your RSS feeds
 1. Specify how many episodes you want
 1. Choose serial (oldest first) or regular + optional start date
-#####Run `python -m podpuller [opt:single_feed]`
+
+#### Run: `python -m podpuller [opt:single_feed]`
 1. Mark the ones you listened to (or skip with "quick mode") 
 1. Wait for sync (only syncs single feed if specified)
 1. Optionally, transfer to external drive
