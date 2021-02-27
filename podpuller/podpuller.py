@@ -90,10 +90,15 @@ def process_feed(feed_name, conf, be_quick):
     update_configfile(conf)
 
 
-def sync_external():
+def sync_external(argv):
 
     rsync_dir = directories["rsync"]
     dl_dir = directories["dl"]
+
+    # Single feed sync
+    if len(argv) > 1:   
+        rsync_dir = os.path.join(rsync_dir, argv[1])+os.path.sep
+        dl_dir = os.path.join(dl_dir, argv[1])+os.path.sep
 
     if os.path.exists(rsync_dir):
         if ui.yesno(f"Sync to player {rsync_dir}?"):
@@ -150,7 +155,7 @@ def main():
     logging.info("Done updating feeds.")
 
     # Try to sync to external drive (mp3 player)
-    sync_external()
+    sync_external(sys.argv)
 
 
 if __name__ == "__main__":
