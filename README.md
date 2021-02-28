@@ -55,7 +55,7 @@ RSS is a long-standing open standard for updated feeds. Your podcast success is 
 
 ## Roadmap
 
-- Tag MP3 files with info from feed
+- ~~Tag MP3 files with info from feed~~
 - ~~Put project on PyPI~~
 - ~~UI improvements~~
 - ~~Handle "oldest-first" workflow for serial podcasts~~
