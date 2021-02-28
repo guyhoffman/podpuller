@@ -25,7 +25,13 @@ def hash_episode(episode, rss):
     episode.pub_date = dt.fromtimestamp(time.mktime(episode.published_parsed))
     episode.podcast = rss.feed.title
     episode.publisher = rss.feed.author
-    episode.image = rss.feed.image.href
+    if hasattr(episode, 'image'):
+        episode.imagelink = episode.image.href
+        print("Has episode image")
+    else:
+        episode.imagelink = rss.feed.image.href
+        print("No episode image")
+
 
 
 def get_episode(show, episode, dl_dir):
@@ -88,7 +94,7 @@ def tag_mp3file(filepath, episode):
 
     # Add album art
     type = eyed3.id3.frames.ImageFrame.FRONT_COVER
-    r = requests.get(episode.image)
+    r = requests.get(episode.imagelink)
     f.tag.images.set(type, r.content, r.headers['Content-Type'])
     f.tag.save()
 
