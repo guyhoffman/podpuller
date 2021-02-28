@@ -3,6 +3,7 @@
 ### A simple python app to sync your podcasts with RSS feeds and transfer to an external MP3 player
 
 [![PyPI version](https://badge.fury.io/py/podpuller.svg)](https://badge.fury.io/py/podpuller)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Requirements Status](https://requires.io/github/guyhoffman/podpuller/requirements.svg?branch=main)](https://requires.io/github/guyhoffman/podpuller/requirements/?branch=main)
 
 
