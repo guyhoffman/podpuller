@@ -6,6 +6,7 @@ import time
 from datetime import datetime as dt
 from os.path import expanduser
 
+import eyed3
 import feedparser
 import requests
 from feedparser.util import FeedParserDict
@@ -19,9 +20,12 @@ TEMPDIR = "/tmp/podpuller"
 BADFNCHARS = re.compile(r"[^\w]+")
 
 
-def hash_episode(episode):
+def hash_episode(episode, rss):
     episode.hash = episode_hash(episode)
     episode.pub_date = dt.fromtimestamp(time.mktime(episode.published_parsed))
+    episode.podcast = rss.feed.title
+    episode.publisher = rss.feed.author
+    episode.image = rss.feed.image.href
 
 
 def get_episode(show, episode, dl_dir):
@@ -63,6 +67,9 @@ def download_episode(episode, dl_loc):
         markDownloaded(episode)
         return False
 
+    # Updat ID3 tags
+    tag_mp3file(download_loc, episode)
+
     # Move downloaded file to its final destination
     logging.debug(f"Moving {download_loc} to {dl_loc}")
 
@@ -72,6 +79,18 @@ def download_episode(episode, dl_loc):
     shutil.move(download_loc, dl_loc)
 
     return True
+
+def tag_mp3file(filepath, episode):
+    f = eyed3.load(filepath)
+    f.tag.title = episode.title
+    f.tag.artist = episode.publisher
+    f.tag.album = episode.podcast
+
+    # Add album art
+    type = eyed3.id3.frames.ImageFrame.FRONT_COVER
+    r = requests.get(episode.image)
+    f.tag.images.set(type, r.content, r.headers['Content-Type'])
+    f.tag.save()
 
 
 def download_enclosure(episode):
