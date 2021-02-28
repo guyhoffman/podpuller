@@ -68,7 +68,7 @@ def process_feed(feed_name, conf, be_quick):
 
     have = 0
     for episode in rss.entries:
-        hash_episode(episode)
+        hash_episode(episode, rss)
 
         if tobe_deleted and generate_filename(episode) in tobe_deleted:
             delete_episode(feed.name, episode, dl_dir)
