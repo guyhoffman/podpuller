@@ -2,22 +2,22 @@
 
 import feedparser
 
+import argparse
 import configparser
 import logging
 from os.path import expanduser
 from subprocess import run
-import sys
 from termcolor import cprint
 
 from .process import *
 from . import ui
+from .__init__ import __version__
 
 # Configuration Filename
 config_filename = "~/.config/podpuller/feeds.conf"
 directories = {}
 
 logging.basicConfig(level=logging.WARNING)
-
 
 def update_configfile(conf):
     with open(expanduser(config_filename), "w") as configfile:
@@ -90,15 +90,15 @@ def process_feed(feed_name, conf, be_quick):
     update_configfile(conf)
 
 
-def sync_external(argv):
+def sync_external(singlefeed):
 
     rsync_dir = directories["rsync"]
     dl_dir = directories["dl"]
 
     # Single feed sync
-    if len(argv) > 1:   
-        rsync_dir = os.path.join(rsync_dir, argv[1])+os.path.sep
-        dl_dir = os.path.join(dl_dir, argv[1])+os.path.sep
+    if singlefeed:   
+        rsync_dir = os.path.join(rsync_dir, singlefeed)+os.path.sep
+        dl_dir = os.path.join(dl_dir, singlefeed)+os.path.sep
 
     if os.path.exists(rsync_dir):
         if ui.yesno(f"Sync to player {rsync_dir}?"):
@@ -125,6 +125,12 @@ def parse_dirs(config):
 
 def main():
 
+    # Command line arguments
+    ps = argparse.ArgumentParser()
+    ps.add_argument("singlefeed", nargs='?', help="Name of single feed to update")
+    ps.add_argument('--version', action='version', version=f"PodPuller v{__version__}")
+    args = ps.parse_args()
+
     # Read feeds from config file
     conf = configparser.ConfigParser()
     conf.read(expanduser(config_filename))
@@ -144,8 +150,8 @@ def main():
         be_quick = True
 
     # If a feed ID is given, only process that feed
-    if len(sys.argv) > 1:
-        process_feed(sys.argv[1], conf, be_quick)
+    if args.singlefeed:
+        process_feed(args.singlefeed, conf, be_quick)
     else:
         # Process all feeds (except DEFAULT)
         for feed_name in conf:
@@ -155,7 +161,7 @@ def main():
     logging.info("Done updating feeds.")
 
     # Try to sync to external drive (mp3 player)
-    sync_external(sys.argv)
+    sync_external(args.singlefeed)
 
 
 if __name__ == "__main__":
