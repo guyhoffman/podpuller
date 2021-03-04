@@ -11,7 +11,7 @@ from termcolor import cprint
 
 from .process import *
 from . import ui
-from .__init__ import __version__
+from . import __version__
 
 # Configuration Filename
 config_filename = "~/.config/podpuller/feeds.conf"
