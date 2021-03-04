@@ -27,10 +27,8 @@ def hash_episode(episode, rss):
     episode.publisher = rss.feed.author
     if hasattr(episode, 'image'):
         episode.imagelink = episode.image.href
-        print("Has episode image")
     else:
         episode.imagelink = rss.feed.image.href
-        print("No episode image")
 
 
 
