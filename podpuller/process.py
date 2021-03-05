@@ -85,16 +85,25 @@ def download_episode(episode, dl_loc):
     return True
 
 def tag_mp3file(filepath, episode):
+
     f = eyed3.load(filepath)
-    f.tag.title = episode.title
-    f.tag.artist = episode.publisher
-    f.tag.album = episode.podcast
+    t = f.tag
+
+    # Adjust version
+    if t.isV1():
+        t.version = eyed3.id3.ID3_V2_4
+
+    t.title = episode.title
+    t.artist = episode.publisher
+    t.album = episode.podcast
 
     # Add album art
     type = eyed3.id3.frames.ImageFrame.FRONT_COVER
     r = requests.get(episode.imagelink)
-    f.tag.images.set(type, r.content, r.headers['Content-Type'])
-    f.tag.save()
+    t.images.set(type, r.content, r.headers['Content-Type'])
+
+    # Save ID3 tag
+    t.save()
 
 
 def download_enclosure(episode):
