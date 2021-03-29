@@ -89,6 +89,10 @@ def tag_mp3file(filepath, episode):
     f = eyed3.load(filepath)
     t = f.tag
 
+    if not t:
+        f.initTag()
+        t = f.tag
+
     # Adjust version
     if t.isV1():
         t.version = eyed3.id3.ID3_V2_4
