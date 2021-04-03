@@ -87,14 +87,19 @@ def download_episode(episode, dl_loc):
 def tag_mp3file(filepath, episode):
 
     f = eyed3.load(filepath)
+
+    # Some files do not support IDv3 tags
+    if not f:
+        return
+
+    # Deal with non-existinng tags
+    if not f.tag:
+        f.initTag()
+        
     t = f.tag
 
-    if not t:
-        f.initTag()
-        t = f.tag
-
     # Adjust version
-    if t.isV1():
+    if t.version != eyed3.id3.ID3_V2_4:
         t.version = eyed3.id3.ID3_V2_4
 
     t.title = episode.title
@@ -118,8 +123,9 @@ def download_enclosure(episode):
     if not os.path.exists(os.path.dirname(downloadto)):
         os.makedirs(os.path.dirname(downloadto))
 
-    # Get link from first mpeg enclosure
-    first_mp3 = list(filter(lambda x: x["type"] == "audio/mpeg", episode.enclosures))[0]
+    # Get link from first supported enclosure
+    audio_types = ['audio/mpeg', 'audio/x-m4a']
+    first_mp3 = list(filter(lambda x: x["type"] in audio_types, episode.enclosures))[0]
     url = first_mp3.href
 
     try:
