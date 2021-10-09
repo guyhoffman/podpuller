@@ -112,7 +112,10 @@ def tag_mp3file(filepath, episode):
     t.images.set(type, r.content, r.headers['Content-Type'])
 
     # Save ID3 tag
-    t.save()
+    try:
+        t.save()
+    except Exception as e:
+        logging.warn(f"Couldn't save ID3 Tag: {e.message}")
 
 
 def download_enclosure(episode):
