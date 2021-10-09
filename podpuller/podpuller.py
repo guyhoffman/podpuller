@@ -34,7 +34,16 @@ def process_feed(feed_name, conf, be_quick):
     """
     feed = conf[feed_name]
     url = feed["URL"]
-    keep = feed.getint("keep episodes", 0)
+
+    keep = 0
+    keep_str = feed.get("keep episodes")
+    if keep_str.isnumeric():
+        keep = int(keep_str)
+    elif keep_str == 'all':
+        keep = 1e20  # Practically infinity
+    else: 
+        logging.error(f'Feed {feed} keep episodes ({keep_str}) must be number or all.')
+
     start_date = parse_date(feed.get("start date"))
 
     rss = feedparser.parse(url)
@@ -46,7 +55,7 @@ def process_feed(feed_name, conf, be_quick):
         logging.error("Erroneous feed URL: %s (%s)" % (url, type(e)))
         return
 
-    cprint(f"  ===== {rss.feed.title} ({feed.name}; keep {keep}) =====  ", "grey","on_yellow")
+    cprint(f"  ===== {rss.feed.title} ({feed.name}; keep {keep_str}) =====  ", "grey","on_yellow")
 
     # Serial podcasts need to be processed from last to first
     if feed.getboolean("serial"):
