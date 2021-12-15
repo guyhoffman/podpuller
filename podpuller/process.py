@@ -102,9 +102,15 @@ def tag_mp3file(filepath, episode):
     if t.version != eyed3.id3.ID3_V2_4:
         t.version = eyed3.id3.ID3_V2_4
 
-    t.title = episode.title
-    t.artist = episode.publisher
-    t.album = episode.podcast
+    print(f'Title from {t.title} to {episode.title}')
+    print(f'artist from {t.artist} to {episode.publisher}')
+    print(f'album from {t.album} to {episode.podcast}')
+    if not t.title:
+        t.title = episode.title
+    if not t.artist:
+        t.artist = episode.publisher
+    if not t.album: 
+        t.album = episode.podcast
 
     # Add album art
     type = eyed3.id3.frames.ImageFrame.FRONT_COVER
