@@ -115,7 +115,8 @@ def tag_mp3file(filepath, episode):
     try:
         t.save()
     except Exception as e:
-        logging.warn(f"Couldn't save ID3 Tag: {e.message}")
+        msg = ': ' + e.message if hasattr(e, 'message') else ''
+        logging.warn(f"Couldn't save ID3 Tag {msg}")
 
 
 def download_enclosure(episode):
