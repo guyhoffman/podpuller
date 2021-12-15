@@ -48,6 +48,10 @@ def process_feed(feed_name, conf, be_quick):
 
     rss = feedparser.parse(url)
 
+    rtl = feed.getboolean("rtl")
+    if rtl:
+        rss.feed.title = rss.feed.title[::-1]
+
     # Check for fetch / parse errors
     try:
         check_feederrors(rss)
@@ -69,7 +73,12 @@ def process_feed(feed_name, conf, be_quick):
 
     tobe_deleted = []
     if not be_quick:
-        tobe_deleted = ui.mark_deletion(dl_dir + os.sep + feed.name)
+        tobe_deleted = ui.mark_deletion(dl_dir + os.sep + feed.name, rtl)
+
+    for tbd in tobe_deleted:
+        if rtl:
+            tbd = tbd[::-1]
+        delete_episode(feed.name, tbd, dl_dir)
 
     if start_date:
         pretty_date = start_date.strftime("%B %d, %Y")
@@ -79,8 +88,10 @@ def process_feed(feed_name, conf, be_quick):
     for episode in rss.entries:
         hash_episode(episode, rss)
 
-        if tobe_deleted and generate_filename(episode) in tobe_deleted:
-            delete_episode(feed.name, episode, dl_dir)
+        if rtl:
+            episode['title'] = episode['title'][::-1]
+
+        if generate_filename(episode) in tobe_deleted:
             markPlayed(episode)
             continue
 
@@ -89,7 +100,7 @@ def process_feed(feed_name, conf, be_quick):
                 if get_episode(feed.name, episode, dl_dir):
                     have += 1
         else:
-            delete_episode(feed.name, episode, dl_dir)
+            delete_episode(feed.name, generate_filename(episode), dl_dir)
 
     # Post-processing Put podcast in config file it was just a URL
     if not "name" in feed:

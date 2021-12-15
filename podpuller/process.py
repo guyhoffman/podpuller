@@ -166,17 +166,17 @@ def sanitize(str):
     return re.sub(BADFNCHARS, "_", str).strip("_")
 
 
-def episode_location(dl_dir, show, episode):
-    return expanduser(dl_dir) + os.sep + show + os.sep + generate_filename(episode)
+def episode_location(dl_dir, show, filename):
+    return expanduser(dl_dir) + os.sep + show + os.sep + filename
 
 
-def delete_episode(show, episode, dl_dir, manual=False):
+def delete_episode(show, filename, dl_dir):
 
-    episode_loc = episode_location(dl_dir, show, episode)
+    episode_loc = episode_location(dl_dir, show, filename)
 
     # Remove episode
     if os.path.exists(episode_loc):
-        cprint(f"Removing: {episode.title}", "red")
+        cprint(f"Removing: {filename}", "red")
         os.remove(episode_loc)
         return True
 
