@@ -29,8 +29,7 @@ def mark_deletion(dir, rtl=False):
             if len(not_dotfiles) > 0:
                 cprint(f"Mark listened with [Space]. [Enter] to continue.", "red")
 
-                if rtl:
-                    not_dotfiles = [f[::-1] for f in not_dotfiles]
+                not_dotfiles = [rtlize(f, rtl) for f in not_dotfiles]
 
                 cli = Check(
                     choices=not_dotfiles, check="X ", check_color=colors.foreground["red"]
@@ -38,3 +37,15 @@ def mark_deletion(dir, rtl=False):
                 return cli.launch()
             else:
                 return []
+
+def rtlize (str, rtl):
+    """If rtl is True, reverse string
+
+    Args:
+        str (string): The string to possibly flip
+        rtl (boolean): Whether to flip it
+    """
+    if rtl: 
+        return str[::-1]
+    else:
+        return str

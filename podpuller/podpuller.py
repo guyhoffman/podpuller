@@ -17,7 +17,7 @@ from . import __version__
 config_filename = "~/.config/podpuller/feeds.conf"
 directories = {}
 
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.DEBUG)
 
 def update_configfile(conf):
     with open(expanduser(config_filename), "w") as configfile:
@@ -49,8 +49,6 @@ def process_feed(feed_name, conf, be_quick):
     rss = feedparser.parse(url)
 
     rtl = feed.getboolean("rtl")
-    if rtl:
-        rss.feed.title = rss.feed.title[::-1]
 
     # Check for fetch / parse errors
     try:
@@ -59,7 +57,7 @@ def process_feed(feed_name, conf, be_quick):
         logging.error("Erroneous feed URL: %s (%s)" % (url, type(e)))
         return
 
-    cprint(f"  ===== {rss.feed.title} ({feed.name}; keep {keep_str}) =====  ", "grey","on_yellow")
+    cprint(f"  ===== {ui.rtlize(rss.feed.title, rtl)} ({feed.name}; keep {keep_str}) =====  ", "grey","on_yellow")
 
     # Serial podcasts need to be processed from last to first
     if feed.getboolean("serial"):
@@ -76,9 +74,7 @@ def process_feed(feed_name, conf, be_quick):
         tobe_deleted = ui.mark_deletion(dl_dir + os.sep + feed.name, rtl)
 
     for tbd in tobe_deleted:
-        if rtl:
-            tbd = tbd[::-1]
-        delete_episode(feed.name, tbd, dl_dir)
+        delete_episode(feed.name, ui.rtlize(tbd, rtl), dl_dir, rtl)
 
     if start_date:
         pretty_date = start_date.strftime("%B %d, %Y")
@@ -88,19 +84,16 @@ def process_feed(feed_name, conf, be_quick):
     for episode in rss.entries:
         hash_episode(episode, rss)
 
-        if rtl:
-            episode['title'] = episode['title'][::-1]
-
-        if generate_filename(episode) in tobe_deleted:
+        if ui.rtlize(generate_filename(episode), rtl) in tobe_deleted:
             markPlayed(episode)
             continue
 
         if have < keep:
             if not start_date or episode.pub_date >= start_date:
-                if get_episode(feed.name, episode, dl_dir):
+                if get_episode(feed.name, episode, dl_dir, rtl):
                     have += 1
         else:
-            delete_episode(feed.name, generate_filename(episode), dl_dir)
+            delete_episode(feed.name, generate_filename(episode), dl_dir, rtl)
 
     # Post-processing Put podcast in config file it was just a URL
     if not "name" in feed:
@@ -160,7 +153,7 @@ def main():
 
     # Init DB
     init_db(directories["data"])
-    logging.debug(list(Episode.select()))
+    # logging.debug(list(Episode.select()))
 
     # Check for quick mode
     be_quick = False

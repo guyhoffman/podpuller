@@ -32,13 +32,13 @@ def hash_episode(episode, rss):
 
 
 
-def get_episode(show, episode, dl_dir):
+def get_episode(show, episode, dl_dir, rtl=False):
 
     dl_loc = expanduser(dl_dir) + os.sep + show + os.sep + generate_filename(episode)
 
     # Do we have this file?
     if os.path.exists(dl_loc):
-        cprint(f"Already have: {episode.title}", "cyan")
+        cprint(f"Already have: {ui.rtlize(episode.title, rtl)}", "cyan")
         return True
     else:
         # We not have this file
@@ -46,22 +46,22 @@ def get_episode(show, episode, dl_dir):
 
         # We might have played and deleted it in the past, don't download again
         if e and e.played:
-            cprint(f"Already listened: {episode.title}", "magenta")
+            cprint(f"Already listened: {ui.rtlize(episode.title, rtl)}", "magenta")
             return False
 
     # If we are here, we want another episode, we don't have this one, and haven't played
-    if download_episode(episode, dl_loc):
+    if download_episode(episode, dl_loc, rtl):
         markDownloaded(episode)
         return True
 
     return False
 
 
-def download_episode(episode, dl_loc):
+def download_episode(episode, dl_loc, rtl=False):
     """Performs downloading of specified file. Returns success boolean"""
 
     # Find and download first MPEG audio enclosure
-    download_loc = download_enclosure(episode)
+    download_loc = download_enclosure(episode, rtl)
     if not download_loc:
         return False
 
@@ -118,7 +118,7 @@ def tag_mp3file(filepath, episode):
         logging.warn(f"Couldn't save ID3 Tag: {e.message}")
 
 
-def download_enclosure(episode):
+def download_enclosure(episode, rtl=False):
     """Downloads URL to file, returns file name of download (from URL or Content-Disposition)"""
 
     # Temp DL destination
@@ -132,7 +132,7 @@ def download_enclosure(episode):
     url = first_mp3.href
 
     try:
-        cprint(f"Downloading {episode.title}", "yellow")
+        cprint(f"Downloading {ui.rtlize(episode.title, rtl)}", "yellow")
         r = requests.get(url, stream=True, timeout=15)
 
         # Download with progress bar in 2k chunks
@@ -170,13 +170,13 @@ def episode_location(dl_dir, show, filename):
     return expanduser(dl_dir) + os.sep + show + os.sep + filename
 
 
-def delete_episode(show, filename, dl_dir):
+def delete_episode(show, filename, dl_dir, rtl=False):
 
     episode_loc = episode_location(dl_dir, show, filename)
 
     # Remove episode
     if os.path.exists(episode_loc):
-        cprint(f"Removing: {filename}", "red")
+        cprint(f"Removing: {ui.rtlize(filename, rtl)}", "red")
         os.remove(episode_loc)
         return True
 
