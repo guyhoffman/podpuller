@@ -17,7 +17,8 @@ from . import __version__
 config_filename = "~/.config/podpuller/feeds.conf"
 directories = {}
 
-logging.basicConfig(level=logging.DEBUG)
+LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
+logging.basicConfig(level=LOGLEVEL)
 
 def update_configfile(conf):
     with open(expanduser(config_filename), "w") as configfile:

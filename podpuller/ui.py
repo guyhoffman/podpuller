@@ -37,6 +37,8 @@ def mark_deletion(dir, rtl=False):
                 return cli.launch()
             else:
                 return []
+    return[]
+    
 
 def rtlize (str, rtl):
     """If rtl is True, reverse string
