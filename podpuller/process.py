@@ -102,7 +102,10 @@ def tag_mp3file(filepath, episode):
     if t.version != eyed3.id3.ID3_V2_4:
         t.version = eyed3.id3.ID3_V2_4
 
-    t.title = episode.title
+    # Sanitize title
+    encoded_title = episode.title.encode(encoding="ascii", errors="ignore")
+
+    t.title = encoded_title.decode()
     t.artist = episode.publisher
     t.album = episode.podcast
 
