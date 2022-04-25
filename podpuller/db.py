@@ -42,7 +42,10 @@ def markPlayed(episode):
 def seen(episode):
     logging.debug(f'Searching Episode {episode.title}, hash {episode.hash}')
     try:
-        return Episode.byHash(episode.hash)
+        e = Episode.byHash(episode.hash)
+        logging.debug(f'Found Episode {e}')
+        return e
+
 
     except SQLObjectNotFound:
         logging.debug('not found')
