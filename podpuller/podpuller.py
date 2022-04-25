@@ -72,10 +72,10 @@ def process_feed(feed_name, conf, be_quick):
 
     tobe_deleted = []
     if not be_quick:
-        tobe_deleted = ui.mark_deletion(dl_dir + os.sep + feed.name, rtl)
+        tobe_deleted = ui.mark_deletion(dl_dir + os.sep + feed.name)
 
     for tbd in tobe_deleted:
-        delete_episode(feed.name, ui.rtlize(tbd, rtl), dl_dir, rtl)
+        delete_episode(feed.name, tbd, dl_dir)
 
     if start_date:
         pretty_date = start_date.strftime("%B %d, %Y")
@@ -83,18 +83,20 @@ def process_feed(feed_name, conf, be_quick):
 
     have = 0
     for episode in rss.entries:
+
+        episode.title = ui.rtlize(episode.title, rtl)
         hash_episode(episode, rss)
 
-        if ui.rtlize(generate_filename(episode), rtl) in tobe_deleted:
+        if generate_filename(episode) in tobe_deleted:
             markPlayed(episode)
             continue
 
         if have < keep:
             if not start_date or episode.pub_date >= start_date:
-                if get_episode(feed.name, episode, dl_dir, rtl):
+                if get_episode(feed.name, episode, dl_dir):
                     have += 1
         else:
-            delete_episode(feed.name, generate_filename(episode), dl_dir, rtl)
+            delete_episode(feed.name, generate_filename(episode), dl_dir)
 
     # Post-processing Put podcast in config file it was just a URL
     if not "name" in feed:

@@ -20,7 +20,7 @@ def yesno(prompt):
     return user_wish and "yes".startswith(user_wish.lower())
 
 
-def mark_deletion(dir, rtl=False):
+def mark_deletion(dir):
     if os.path.exists(dir):
         filenames = sorted(os.listdir(dir), reverse=True)
         if filenames:
@@ -29,7 +29,7 @@ def mark_deletion(dir, rtl=False):
             if len(not_dotfiles) > 0:
                 cprint(f"Mark listened with [Space]. [Enter] to continue.", "red")
 
-                not_dotfiles = [rtlize(f, rtl) for f in not_dotfiles]
+                not_dotfiles = [f for f in not_dotfiles]
 
                 cli = Check(
                     choices=not_dotfiles, check="X ", check_color=colors.foreground["red"]
@@ -47,7 +47,7 @@ def rtlize (str, rtl):
         str (string): The string to possibly flip
         rtl (boolean): Whether to flip it
     """
-    if rtl: 
+    if rtl:
         return str[::-1]
     else:
         return str

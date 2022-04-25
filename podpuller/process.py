@@ -17,7 +17,6 @@ from . import ui
 from .db import *
 
 TEMPDIR = "/tmp/podpuller"
-BADFNCHARS = re.compile(r"[^\w]+")
 
 
 def hash_episode(episode, rss):
@@ -32,13 +31,13 @@ def hash_episode(episode, rss):
 
 
 
-def get_episode(show, episode, dl_dir, rtl=False):
+def get_episode(show, episode, dl_dir):
 
     dl_loc = expanduser(dl_dir) + os.sep + show + os.sep + generate_filename(episode)
 
     # Do we have this file?
     if os.path.exists(dl_loc):
-        cprint(f"Already have: {ui.rtlize(episode.title, rtl)}", "cyan")
+        cprint(f"Already have: {episode.title}", "cyan")
         return True
     else:
         # We not have this file
@@ -46,22 +45,22 @@ def get_episode(show, episode, dl_dir, rtl=False):
 
         # We might have played and deleted it in the past, don't download again
         if e and e.played:
-            cprint(f"Already listened: {ui.rtlize(episode.title, rtl)}", "magenta")
+            cprint(f"Already listened: {episode.title}", "magenta")
             return False
 
     # If we are here, we want another episode, we don't have this one, and haven't played
-    if download_episode(episode, dl_loc, rtl):
+    if download_episode(episode, dl_loc):
         markDownloaded(episode)
         return True
 
     return False
 
 
-def download_episode(episode, dl_loc, rtl=False):
+def download_episode(episode, dl_loc):
     """Performs downloading of specified file. Returns success boolean"""
 
     # Find and download first MPEG audio enclosure
-    download_loc = download_enclosure(episode, rtl)
+    download_loc = download_enclosure(episode)
     if not download_loc:
         return False
 
@@ -121,7 +120,7 @@ def tag_mp3file(filepath, episode):
         logging.warn(f"Couldn't save ID3 Tag: {e.message}")
 
 
-def download_enclosure(episode, rtl=False):
+def download_enclosure(episode):
     """Downloads URL to file, returns file name of download (from URL or Content-Disposition)"""
 
     # Temp DL destination
@@ -135,7 +134,7 @@ def download_enclosure(episode, rtl=False):
     url = first_mp3.href
 
     try:
-        cprint(f"Downloading {ui.rtlize(episode.title, rtl)}", "yellow")
+        cprint(f"Downloading {episode.title}", "yellow")
         r = requests.get(url, stream=True, timeout=15)
 
         # Download with progress bar in 2k chunks
@@ -164,6 +163,7 @@ def generate_filename(episode):
     entry_title = sanitize(episode.title)
     return f"{entry_title}.mp3"
 
+BADFNCHARS = re.compile(r"[^\w]+")
 
 def sanitize(str):
     return re.sub(BADFNCHARS, "_", str).strip("_")
@@ -173,13 +173,13 @@ def episode_location(dl_dir, show, filename):
     return expanduser(dl_dir) + os.sep + show + os.sep + filename
 
 
-def delete_episode(show, filename, dl_dir, rtl=False):
+def delete_episode(show, filename, dl_dir):
 
     episode_loc = episode_location(dl_dir, show, filename)
 
     # Remove episode
     if os.path.exists(episode_loc):
-        cprint(f"Removing: {ui.rtlize(filename, rtl)}", "red")
+        cprint(f"Removing: {filename}", "red")
         os.remove(episode_loc)
         return True
 
