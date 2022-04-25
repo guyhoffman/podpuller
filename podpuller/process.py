@@ -101,12 +101,12 @@ def tag_mp3file(filepath, episode):
     if t.version != eyed3.id3.ID3_V2_4:
         t.version = eyed3.id3.ID3_V2_4
 
-    # Sanitize title
-    encoded_title = episode.title.encode(encoding="ascii", errors="ignore")
-
-    t.title = encoded_title.decode()
-    t.artist = episode.publisher
-    t.album = episode.podcast
+    if not t.title:
+        t.title = episode.title
+    if not t.artist:
+        t.artist = episode.publisher
+    if not t.album: 
+        t.album = episode.podcast
 
     # Add album art
     type = eyed3.id3.frames.ImageFrame.FRONT_COVER
@@ -117,7 +117,8 @@ def tag_mp3file(filepath, episode):
     try:
         t.save()
     except Exception as e:
-        logging.warn(f"Couldn't save ID3 Tag: {e.message}")
+        msg = ': ' + e.message if hasattr(e, 'message') else ''
+        logging.warn(f"Couldn't save ID3 Tag {msg}")
 
 
 def download_enclosure(episode):
