@@ -4,8 +4,6 @@
 
 [![PyPI version](https://badge.fury.io/py/podpuller.svg)](https://badge.fury.io/py/podpuller)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Requirements Status](https://requires.io/github/guyhoffman/podpuller/requirements.svg?branch=main)](https://requires.io/github/guyhoffman/podpuller/requirements/?branch=main)
-
 
 ## Quick Start
 1. `pip install podpuller`
@@ -47,7 +45,7 @@ The config file is read from `~/.config/podpuller/feeds.conf` and you have an ex
 ##### Feed Configs
 - Every feed goes into a directory named by its config file section (e.g., `tal` in the sample conf file).
 - The `serial` config gets episodes from oldest to newest.
-- `start date` ignored everything before that date (useful for `serial` podcasts).
+- `start date` ignores everything before that date (useful for `serial` podcasts).
 - There's no need to provide a name for the feed, just a URL, the name will be auto-filled from the RSS feed.
 
 ### Notes
