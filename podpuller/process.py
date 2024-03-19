@@ -154,6 +154,10 @@ def download_enclosure(episode):
         else:
             return None
 
+    except requests.exceptions.RequestException as e:
+        cprint(f"ERROR: Could not complete episode HTTP request: {e}", "red")
+        return None
+
     # TODO: Add MP3 metadata if it doesn't exist
 
     return downloadto
