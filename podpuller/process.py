@@ -14,6 +14,7 @@ from termcolor import cprint
 from tqdm import tqdm
 
 from . import ui
+from . import __version__
 from .db import *
 
 TEMPDIR = "/tmp/podpuller"
@@ -110,8 +111,12 @@ def tag_mp3file(filepath, episode):
 
     # Add album art
     type = eyed3.id3.frames.ImageFrame.FRONT_COVER
-    r = requests.get(episode.imagelink)
-    t.images.set(type, r.content, r.headers['Content-Type'])
+    try:
+        r = requests.get(episode.imagelink, timeout=10)
+        t.images.set(type, r.content, r.headers['Content-Type'])
+    except requests.exceptions.RequestException as e:
+        cprint(f"WARNING: Could not complete episode HTTP request: {e}", "yellow")
+
 
     # Save ID3 tag
     try:
@@ -133,10 +138,16 @@ def download_enclosure(episode):
     audio_types = ['audio/mpeg', 'audio/x-m4a']
     first_mp3 = list(filter(lambda x: x["type"] in audio_types, episode.enclosures))[0]
     url = first_mp3.href
+    headers = {
+        'User-Agent': f'PodPuller v{__version__}'
+    }
 
     try:
         cprint(f"Downloading {episode.title}", "yellow")
-        r = requests.get(url, stream=True, timeout=15)
+        r = requests.get(url, headers=headers, stream=True, timeout=15)
+
+        if not r.ok:
+            raise requests.exceptions.RequestException(f"Status Code {r.status_code}")
 
         # Download with progress bar in 2k chunks
         with open(downloadto, "wb") as f:

@@ -20,6 +20,8 @@ directories = {}
 LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
 logging.basicConfig(level=LOGLEVEL)
 
+MAX_ATTEMPTS = 7
+
 def update_configfile(conf):
     with open(expanduser(config_filename), "w") as configfile:
         conf.write(configfile)
@@ -82,6 +84,7 @@ def process_feed(feed_name, conf, be_quick):
         cprint(f"Starting {pretty_date}", "cyan")
 
     have = 0
+    attempts = 0
     for episode in rss.entries:
 
         episode.title = ui.rtlize(episode.title, rtl)
@@ -95,8 +98,13 @@ def process_feed(feed_name, conf, be_quick):
             if not start_date or episode.pub_date >= start_date:
                 if get_episode(feed.name, episode, dl_dir):
                     have += 1
+                attempts += 1
         else:
             delete_episode(feed.name, generate_filename(episode), dl_dir)
+
+        if attempts >= MAX_ATTEMPTS:
+            logging.warning("Too many failed attempts. Aborting this feed.")
+            return
 
     # Post-processing Put podcast in config file it was just a URL
     if not "name" in feed:
