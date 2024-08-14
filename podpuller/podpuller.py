@@ -84,7 +84,7 @@ def process_feed(feed_name, conf, be_quick):
         cprint(f"Starting {pretty_date}", "cyan")
 
     have = 0
-    attempts = 0
+    failed_attempts = 0
     for episode in rss.entries:
 
         episode.title = ui.rtlize(episode.title, rtl)
@@ -96,13 +96,15 @@ def process_feed(feed_name, conf, be_quick):
 
         if have < keep:
             if not start_date or episode.pub_date >= start_date:
-                if get_episode(feed.name, episode, dl_dir):
-                    have += 1
-                attempts += 1
+                rv = get_episode(feed.name, episode, dl_dir)
+                if rv == -1:
+                    failed_attempts += 1
+                else:
+                    have += rv
         else:
             delete_episode(feed.name, generate_filename(episode), dl_dir)
 
-        if attempts >= MAX_ATTEMPTS:
+        if failed_attempts >= MAX_ATTEMPTS:
             logging.warning("Too many failed attempts. Aborting this feed.")
             return
 

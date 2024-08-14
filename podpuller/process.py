@@ -39,7 +39,7 @@ def get_episode(show, episode, dl_dir):
     # Do we have this file?
     if os.path.exists(dl_loc):
         cprint(f"Already have: {episode.title}", "cyan")
-        return True
+        return 1
     else:
         # We not have this file
         e = seen(episode)
@@ -47,14 +47,14 @@ def get_episode(show, episode, dl_dir):
         # We might have played and deleted it in the past, don't download again
         if e and e.played:
             cprint(f"Already listened: {episode.title}", "magenta")
-            return False
+            return 0
 
     # If we are here, we want another episode, we don't have this one, and haven't played
     if download_episode(episode, dl_loc):
         markDownloaded(episode)
-        return True
+        return 1
 
-    return False
+    return -1
 
 
 def download_episode(episode, dl_loc):
